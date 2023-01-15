@@ -62,6 +62,25 @@ class ORGate(Gate, ABC):
         return {"C": out}
 
 
+# A[in]: List[int]
+# B[out]
+class ORGate_4way(Gate, ABC):
+    def __init__(self):
+        super(ORGate_4way, self).__init__()
+        self.input_names = ("A",)
+        self.or_gate_0 = ORGate()
+        self.or_gate_1 = ORGate()
+        self.or_gate_2 = ORGate()
+
+    @check_inputs
+    def run(self, inputs: Dict[str, int]) -> Dict[str, int]:
+        A = inputs["A"]
+        or_out_0 = self.or_gate_0.run({"A": A[0], "B": A[1]})["C"]
+        or_out_1 = self.or_gate_1.run({"A": A[2], "B": A[3]})["C"]
+        or_out_2 = self.or_gate_2.run({"A": or_out_0, "B": or_out_1})["C"]
+        return {"B": or_out_2}
+
+
 class NORGate(Gate, ABC):
     def __init__(self):
         super(NORGate, self).__init__()
