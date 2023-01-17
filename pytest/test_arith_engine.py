@@ -10,8 +10,8 @@ from utils import generate_samples
 #   4   ADD
 #   5   SUB
 def test_arith_engine():
-    samples = generate_samples(("A", "B"), 0, 255, sample_limit=10000)
-    ops = generate_samples(("op",), 0, 5)
+    samples = generate_samples(("A", "B"), -127, 128, sample_limit=1000)
+    ops = generate_samples(("op",), 0, 6)
     ae = ArithEngine(8)
     for foo, bar in zip(samples, ops):
         A = foo["A"]
@@ -30,4 +30,6 @@ def test_arith_engine():
             ref_out = (A + B) % 256
         elif op == 5:
             ref_out = A - B
+        elif op == 6:
+            ref_out = (A * B) % 256
         assert out == ref_out or abs(out) + abs(ref_out) == pow(2, 8)
